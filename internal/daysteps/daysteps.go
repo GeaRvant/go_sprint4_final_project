@@ -35,7 +35,6 @@ func parsePackage(data string) (int, time.Duration, error) {
 }
 
 func DayActionInfo(data string, weight, height float64) string {
-	// TODO: реализовать функцию
 	walkSteps, walkDuration, err := parsePackage(data)
 	if err != nil {
 		return fmt.Sprintf("Ошибка при получении данных: %v", err)
