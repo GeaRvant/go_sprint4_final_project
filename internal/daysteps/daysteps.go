@@ -46,8 +46,8 @@ func DayActionInfo(data string, weight, height float64) string {
 		return fmt.Sprintf("Ошибка: отрицательная длительность (%d)", walkDuration)
 	}
 	distance := (float64(walkSteps) * stepLength) / float64(mInKm)
-	calories := WalkingSpentCalories(walkSteps, weight, height, walkDuration)
+	//calories := WalkingSpentCalories(walkSteps, weight, height, walkDuration)
 	return fmt.Sprintf(
 		"Количество шагов: %d.\nДистанция составила: %.2f км.\nВы сожгли: %.2f ккал.\n",
-		walkSteps, distance, calories)
+		walkSteps, distance) //calories)
 }
