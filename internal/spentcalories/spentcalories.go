@@ -22,6 +22,9 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	if len(strParts) != 3 {
 		return 0, "", 0, fmt.Errorf("Ошибка преобразования строки: ожидалось 3 части, получено %d", len(strParts))
 	}
+	if strParts[0] == "" || strParts[1] == "" || strings.TrimSpace(strParts[2]) == "" {
+		return 0, "", 0, fmt.Errorf("Строка содержит пустые поля")
+	}
 	elementToInt, err := strconv.Atoi(strings.TrimSpace(strParts[0]))
 	if err != nil {
 		return 0, "", 0, fmt.Errorf("Ошибка преобразования в int: %w", err)
@@ -55,6 +58,18 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 	if err != nil {
 		log.Println("Ошибка при получении данных", err)
 		return "", err
+	}
+	if steps <= 0 {
+		return "", fmt.Errorf("Некорректное количество шагов: %d", steps)
+	}
+	if weight <= 0 || weight > 300 {
+		return "", fmt.Errorf("Некорректный вес: %.2f", weight)
+	}
+	if height <= 50 || height > 250 {
+		return "", fmt.Errorf("Некорректный рост: %.2f", height)
+	}
+	if duration <= 0 || duration.Hours() > 24 {
+		return "", fmt.Errorf("Некорректная длительность: %v", duration)
 	}
 	switch training {
 	case "Ходьба":
@@ -117,5 +132,5 @@ func WalkingSpentCalories(steps int, weight, height float64, duration time.Durat
 	}
 	speed := meanSpeed(steps, height, duration)
 	durationMin := duration.Minutes()
-	return (weight * speed * durationMin) / minInH, nil
+	return ((weight * speed * durationMin) / minInH) * walkingCaloriesCoefficient, nil
 }
